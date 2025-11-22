@@ -25,7 +25,7 @@ st.sidebar.header("Configurações")
 dias_visualizacao = st.sidebar.slider(
     "Período do Gráfico (dias)", 
     min_value=30, 
-    max_value=2000, 
+    max_value=3650, 
     value=100,
     step=100
 )
@@ -125,11 +125,11 @@ if dados is not None and ibov is not None:
     
     # Configuração de limites de escala (Agora todos 5% a 95%)
     limites_escala = {
-        5: (5, 95),
-        10: (5, 95),
-        20: (5, 95),
-        50: (5, 95),
-        200: (5, 95)
+        5: (0, 100),
+        10: (0, 100),
+        20: (0, 100),
+        50: (0, 100),
+        200: (0, 100)
     }
 
     # GRÁFICO 1: Curto Prazo
@@ -176,7 +176,7 @@ if dados is not None and ibov is not None:
             ax.set_ylabel('% Ações')
             
             # Aplica escala fixa 5-95%
-            ax.set_ylim(limites_escala.get(mm, (5, 95)))
+            ax.set_ylim(limites_escala.get(mm, (0, 100)))
             
             ax.grid(True, linestyle=':', linewidth=0.5)
             ax.fill_between(resultados_limpos.index, resultados_limpos[coluna], alpha=0.1, color=cor)
@@ -202,3 +202,4 @@ if dados is not None and ibov is not None:
 else:
 
     st.warning("Não foi possível carregar os dados. Verifique a conexão ou tente novamente mais tarde.")
+
