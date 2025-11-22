@@ -122,9 +122,17 @@ if dados is not None and ibov is not None:
     plt.style.use('ggplot')
     mapa_cores = {5: '#1f77b4', 10: '#00bfa5', 20: '#2ca02c', 50: '#ff7f0e', 200: '#000000'}
     ibov_style = {'color': '#444444', 'linestyle': '-', 'linewidth': 1.0, 'alpha': 0.8}
-    limites_escala = {5: (5, 95), 10: (5, 95), 20: (10, 90), 50: (30, 85), 200: (30, 80)}
+    
+    # Configuração de limites de escala (Agora todos 5% a 95%)
+    limites_escala = {
+        5: (5, 95),
+        10: (5, 95),
+        20: (5, 95),
+        50: (5, 95),
+        200: (5, 95)
+    }
 
-    # ABA 1: Curto Prazo
+    # GRÁFICO 1: Curto Prazo
     st.subheader("⚡ Curto Prazo (MM 5 dias)")
     fig1, ax1 = plt.subplots(figsize=(12, 5))
     
@@ -148,13 +156,11 @@ if dados is not None and ibov is not None:
     
     st.pyplot(fig1)
 
-    # ABA 2: Médio e Longo Prazo
-    st.subheader("📅 Médio e Longo Prazo")
+    # GRÁFICOS RESTANTES (Rolagem única)
     
-    tab_medio, tab_longo = st.tabs(["Médio Prazo (10 e 20)", "Longo Prazo (50 e 200)"])
-
     # Função auxiliar para plotar grupos
     def plot_grupo(mms, titulo):
+        st.subheader(f"📅 {titulo}")
         fig, axes = plt.subplots(len(mms), 1, figsize=(12, 4 * len(mms)), sharex=True)
         if len(mms) == 1: axes = [axes]
 
@@ -168,7 +174,10 @@ if dados is not None and ibov is not None:
             
             ax.set_title(f'Amplitude: MM {mm} Dias', fontsize=10, loc='left')
             ax.set_ylabel('% Ações')
-            ax.set_ylim(limites_escala.get(mm, (0, 100)))
+            
+            # Aplica escala fixa 5-95%
+            ax.set_ylim(limites_escala.get(mm, (5, 95)))
+            
             ax.grid(True, linestyle=':', linewidth=0.5)
             ax.fill_between(resultados_limpos.index, resultados_limpos[coluna], alpha=0.1, color=cor)
             
@@ -180,11 +189,9 @@ if dados is not None and ibov is not None:
 
         st.pyplot(fig)
 
-    with tab_medio:
-        plot_grupo([10, 20], "Médio Prazo")
-    
-    with tab_longo:
-        plot_grupo([50, 200], "Longo Prazo")
+    # Chama as funções sequencialmente (sem Tabs)
+    plot_grupo([10, 20], "Médio Prazo (10 e 20 dias)")
+    plot_grupo([50, 200], "Longo Prazo (50 e 200 dias)")
 
     # --- DADOS BRUTOS ---
     with st.expander("📄 Ver Tabela de Dados Detalhada"):
