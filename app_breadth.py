@@ -25,9 +25,9 @@ st.sidebar.header("Configurações")
 dias_visualizacao = st.sidebar.slider(
     "Período do Gráfico (dias)", 
     min_value=30, 
-    max_value=500, 
+    max_value=2000, 
     value=100,
-    step=10
+    step=100
 )
 
 # Lista de Tickers (Fixa no código, mas exibida aqui)
@@ -200,4 +200,5 @@ if dados is not None and ibov is not None:
         st.dataframe(df_display.sort_index(ascending=False).style.format("{:.1f}"))
 
 else:
+
     st.warning("Não foi possível carregar os dados. Verifique a conexão ou tente novamente mais tarde.")
